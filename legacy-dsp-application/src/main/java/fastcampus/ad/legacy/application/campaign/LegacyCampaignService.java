@@ -1,7 +1,7 @@
 package fastcampus.ad.legacy.application.campaign;
 
-import fastcampus.ad.legacy.domain.user.campaign.LegacyCampaign;
-import fastcampus.ad.legacy.domain.user.campaign.LegacyCampaignRepository;
+import fastcampus.ad.legacy.domain.campaign.LegacyCampaign;
+import fastcampus.ad.legacy.domain.campaign.LegacyCampaignRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;

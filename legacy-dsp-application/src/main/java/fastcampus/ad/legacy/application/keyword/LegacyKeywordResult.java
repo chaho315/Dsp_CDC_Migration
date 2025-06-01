@@ -1,6 +1,6 @@
 package fastcampus.ad.legacy.application.keyword;
 
-import fastcampus.ad.legacy.domain.user.keyword.LegacyKeyword;
+import fastcampus.ad.legacy.domain.keyword.LegacyKeyword;
 
 import java.time.LocalDateTime;
 

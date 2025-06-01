@@ -1,5 +1,9 @@
-package fastcampus.ad.legacy.domain.user.adgroup;
+package fastcampus.ad.legacy.domain.adgroup;
 
+import fastcampus.ad.legacy.domain.adgroup.event.LegacyAdGroupCreatedEvent;
+import fastcampus.ad.legacy.domain.adgroup.event.LegacyAdGroupDeletedEvent;
+import fastcampus.ad.legacy.domain.adgroup.event.LegacyAdGroupLinkUrlUpdatedEvent;
+import fastcampus.ad.legacy.domain.adgroup.event.LegacyAdGroupNameUpdatedEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +40,7 @@ public class LegacyAdGroup extends AbstractAggregateRoot<LegacyAdGroup> {
         this.createdAt = createdAt;
         this.updatedAt = createdAt;
         this.deletedAt = null;
+        registerEvent(new LegacyAdGroupCreatedEvent(this));
     }
 
     public static LegacyAdGroup of(String name, Long campaignId, Long userId, String linkUrl) {
@@ -45,14 +50,17 @@ public class LegacyAdGroup extends AbstractAggregateRoot<LegacyAdGroup> {
     public void updateName(String name) {
         this.name = name;
         updatedAt = LocalDateTime.now();
+        registerEvent(new LegacyAdGroupNameUpdatedEvent(this));
     }
 
     public void updateLinkUrl(String linkUrl) {
         this.linkUrl = linkUrl;
         updatedAt = LocalDateTime.now();
+        registerEvent(new LegacyAdGroupLinkUrlUpdatedEvent(this));
     }
 
     public void delete() {
         deletedAt = LocalDateTime.now();
+        registerEvent(new LegacyAdGroupDeletedEvent(this));
     }
 }

@@ -1,4 +1,4 @@
-package fastcampus.ad.legacy.domain.user.keyword;
+package fastcampus.ad.legacy.domain.keyword;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

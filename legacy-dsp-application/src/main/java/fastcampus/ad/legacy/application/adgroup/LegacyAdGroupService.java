@@ -1,7 +1,7 @@
 package fastcampus.ad.legacy.application.adgroup;
 
-import fastcampus.ad.legacy.domain.user.adgroup.LegacyAdGroup;
-import fastcampus.ad.legacy.domain.user.adgroup.LegacyAdGroupRepository;
+import fastcampus.ad.legacy.domain.adgroup.LegacyAdGroup;
+import fastcampus.ad.legacy.domain.adgroup.LegacyAdGroupRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

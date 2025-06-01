@@ -1,5 +1,7 @@
-package fastcampus.ad.legacy.domain.user.keyword;
+package fastcampus.ad.legacy.domain.keyword;
 
+import fastcampus.ad.legacy.domain.keyword.event.LegacyKeywordCreatedEvent;
+import fastcampus.ad.legacy.domain.keyword.event.LegacyKeywordDeletedEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +34,7 @@ public class LegacyKeyword extends AbstractAggregateRoot<LegacyKeyword> {
         this.userId = userId;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
+        registerEvent(new LegacyKeywordCreatedEvent(this));
     }
 
     public static LegacyKeyword of(String text, Long adGroupId, Long userId) {
@@ -40,5 +43,6 @@ public class LegacyKeyword extends AbstractAggregateRoot<LegacyKeyword> {
 
     public void delete() {
         deletedAt = LocalDateTime.now();
+        registerEvent(new LegacyKeywordDeletedEvent(this));
     }
 }

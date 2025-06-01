@@ -1,6 +1,6 @@
 package fastcampus.ad.legacy.application.campaign;
 
-import fastcampus.ad.legacy.domain.user.campaign.LegacyCampaign;
+import fastcampus.ad.legacy.domain.campaign.LegacyCampaign;
 
 import java.time.LocalDateTime;
 

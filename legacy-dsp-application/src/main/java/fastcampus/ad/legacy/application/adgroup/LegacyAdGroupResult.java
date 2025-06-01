@@ -1,6 +1,6 @@
 package fastcampus.ad.legacy.application.adgroup;
 
-import fastcampus.ad.legacy.domain.user.adgroup.LegacyAdGroup;
+import fastcampus.ad.legacy.domain.adgroup.LegacyAdGroup;
 
 import java.time.LocalDateTime;
 

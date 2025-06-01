@@ -1,6 +1,10 @@
-package fastcampus.ad.legacy.domain.user.campaign;
+package fastcampus.ad.legacy.domain.campaign;
 
 
+import fastcampus.ad.legacy.domain.campaign.event.LegacyCampaignBudgetUpdatedEvent;
+import fastcampus.ad.legacy.domain.campaign.event.LegacyCampaignCreatedEvent;
+import fastcampus.ad.legacy.domain.campaign.event.LegacyCampaignDeletedEvent;
+import fastcampus.ad.legacy.domain.campaign.event.LegacyCampaignNameUpdatedEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +30,7 @@ public class LegacyCampaign extends AbstractAggregateRoot<LegacyCampaign> {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
+
     private LegacyCampaign(String name, Long userId, Long budget, LocalDateTime createdAt) {
         this.name = name;
         this.userId = userId;
@@ -33,6 +38,7 @@ public class LegacyCampaign extends AbstractAggregateRoot<LegacyCampaign> {
         this.createdAt = createdAt;
         this.updatedAt = createdAt;
         this.deletedAt = null;
+        registerEvent(new LegacyCampaignCreatedEvent(this));
     }
 
     public static LegacyCampaign of(String name, Long userId, Long budget) {
@@ -42,14 +48,18 @@ public class LegacyCampaign extends AbstractAggregateRoot<LegacyCampaign> {
     public void updateName(String name) {
         this.name = name;
         updatedAt = LocalDateTime.now();
+        registerEvent(new LegacyCampaignNameUpdatedEvent(this));
     }
 
     public void updateBudget(Long budget) {
         this.budget = budget;
         updatedAt = LocalDateTime.now();
+        registerEvent(new LegacyCampaignBudgetUpdatedEvent(this));
     }
 
     public void delete() {
         deletedAt = LocalDateTime.now();
+        registerEvent(new LegacyCampaignDeletedEvent(this));
     }
 }
+

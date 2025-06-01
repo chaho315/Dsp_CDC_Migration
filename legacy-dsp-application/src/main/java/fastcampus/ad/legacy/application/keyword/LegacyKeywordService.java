@@ -1,7 +1,7 @@
 package fastcampus.ad.legacy.application.keyword;
 
-import fastcampus.ad.legacy.domain.user.keyword.LegacyKeyword;
-import fastcampus.ad.legacy.domain.user.keyword.LegacyKeywordRepository;
+import fastcampus.ad.legacy.domain.keyword.LegacyKeyword;
+import fastcampus.ad.legacy.domain.keyword.LegacyKeywordRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

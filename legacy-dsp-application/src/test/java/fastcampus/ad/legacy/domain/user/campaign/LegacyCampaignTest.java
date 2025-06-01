@@ -1,5 +1,6 @@
 package fastcampus.ad.legacy.domain.user.campaign;
 
+import fastcampus.ad.legacy.domain.campaign.LegacyCampaign;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
