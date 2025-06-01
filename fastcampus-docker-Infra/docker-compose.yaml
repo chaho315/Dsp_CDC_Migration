@@ -1,0 +1,23 @@
+services:
+  fastcampus-mysql:
+    image: mysql:8.2
+    volumes:
+      - D:/lagacy-db:/var/lib/mysql
+    ports:
+      - "3309:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: localpw
+      MYSQL_DATABASE: legacy-ad
+    networks:
+      my_custom_network: # 사용자 정의 네트워크에 할당
+        ipv4_address: 127.0.0.1
+  fastcampus-postgresql:
+    image: postgres:16.2
+    volumes:
+      - D:/recent-db:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: localpw
