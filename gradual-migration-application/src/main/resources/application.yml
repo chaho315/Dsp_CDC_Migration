@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   jpa:
     legacy-ad:
@@ -11,6 +14,18 @@ spring:
           hbm2ddl.auto: update
           show_sql: true
           physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    recent-ad:
+      hikari:
+        jdbc-url: jdbc:postgresql://localhost:5434/postgres
+        username: postgres
+        password: localpw
+        maximum-pool-size: 50
+      properties:
+        hibernate:
+          hbm2ddl.auto: update
+          show_sql: true
+          physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
   cloud:
     stream:
       binders:
@@ -24,7 +39,11 @@ spring:
               password: localpw
               virtual-host: legacy
       bindings:
-        legacy-rabbit-out:
+        legacyConsumer-in-0:
           binder: legacy-rabbit
           destination: legacy-topic
-debug: true
+          group: migration
+
+logging:
+  file:
+    name: D:/logs/gradual.log

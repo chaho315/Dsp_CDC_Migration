@@ -9,9 +9,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: localpw
       MYSQL_DATABASE: legacy-ad
-    networks:
-      my_custom_network: # 사용자 정의 네트워크에 할당
-        ipv4_address: 127.0.0.1
+
   fastcampus-postgresql:
     image: postgres:16.2
     volumes:
@@ -21,3 +19,13 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: localpw
+  fastcampus-rabbitmq:
+    image: rabbitmq:3.13.0-management
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ruser
+      RABBITMQ_DEFAULT_PASS: localpw
+      RABBITMQ_DEFAULT_VHOST: legacy
