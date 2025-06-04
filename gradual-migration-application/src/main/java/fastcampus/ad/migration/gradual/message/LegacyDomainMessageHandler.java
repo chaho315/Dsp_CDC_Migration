@@ -1,6 +1,6 @@
 package fastcampus.ad.migration.gradual.message;
 
-import fastcampus.ad.migration.gradual.application.dispatcher.MigrationDispatcher;
+import fastcampus.ad.migration.application.dispatcher.MigrationDispatcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

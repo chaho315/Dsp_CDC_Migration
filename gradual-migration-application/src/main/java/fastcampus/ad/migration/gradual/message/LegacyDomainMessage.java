@@ -2,7 +2,7 @@ package fastcampus.ad.migration.gradual.message;
 
 
 
-import fastcampus.ad.migration.gradual.domain.AggregateType;
+import fastcampus.ad.migration.domain.AggregateType;
 
 import java.time.LocalDateTime;
 
