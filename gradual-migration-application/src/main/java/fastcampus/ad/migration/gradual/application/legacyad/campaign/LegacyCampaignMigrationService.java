@@ -25,7 +25,7 @@ public class LegacyCampaignMigrationService extends LegacyMigrationService<Legac
 
     @Override
     protected void migrate(LegacyCampaign legacyCampaign) {
-        for(LegacyAdGroup legacyAdGroup : legacyAdGroupRepository.findAllByCampaignIdAndDeletedAtIsNUll(legacyCampaign.getId())){
+        for(LegacyAdGroup legacyAdGroup : legacyAdGroupRepository.findAllByCampaignIdAndDeletedAtIsNull(legacyCampaign.getId())){
             legacyAdGroupMigrationService.migrate(legacyAdGroup.getId());
         }
     }

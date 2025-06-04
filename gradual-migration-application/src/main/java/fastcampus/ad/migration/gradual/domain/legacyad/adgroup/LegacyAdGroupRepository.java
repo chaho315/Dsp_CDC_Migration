@@ -7,5 +7,6 @@ import java.util.List;
 
 @Repository
 public interface LegacyAdGroupRepository extends CrudRepository<LegacyAdGroup, Long> {
-    List<LegacyAdGroup> findAllByCampaignIdAndDeletedAtIsNUll(Long campaignId);
+
+    List<LegacyAdGroup> findAllByCampaignIdAndDeletedAtIsNull(Long campaignId);
 }
