@@ -1,0 +1,9 @@
+### 단건 재처리
+PUT http://localhost:8082/migration/v1/retry
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "aggregateId": 3,
+  "aggregateType": "KEYWORD"
+}
