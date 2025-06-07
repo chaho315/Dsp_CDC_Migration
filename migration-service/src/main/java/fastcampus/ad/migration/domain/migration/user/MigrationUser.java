@@ -1,9 +1,6 @@
 package fastcampus.ad.migration.domain.migration.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.AbstractAggregateRoot;
@@ -22,6 +19,8 @@ public class MigrationUser extends AbstractAggregateRoot<MigrationUser> {
     private MigrationUserStatus status;
     private LocalDateTime agreedAt;
     private LocalDateTime updatedAt;
+    @Transient
+    private MigrationUserStatus prevStatus;
 
     public MigrationUser(Long id, LocalDateTime agreedAt) {
         this.id = id;
@@ -33,5 +32,23 @@ public class MigrationUser extends AbstractAggregateRoot<MigrationUser> {
 
     public static MigrationUser agreed(Long id){
         return new MigrationUser(id, LocalDateTime.now());
+    }
+
+    public void progressMigation() {
+        prevStatus = status;
+        status = status.next();
+        updatedAt = LocalDateTime.now();
+        registerEvent(new MigrationProgressedEvent(this));
+    }
+
+    @Override
+    public String toString() {
+        return "MigrationUser{" +
+                "id=" + id +
+                ", status=" + status +
+                ", agreedAt=" + agreedAt +
+                ", updatedAt=" + updatedAt +
+                ", prevStatus=" + prevStatus +
+                '}';
     }
 }

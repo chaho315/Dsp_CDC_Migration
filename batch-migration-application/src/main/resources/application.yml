@@ -1,0 +1,64 @@
+server:
+  port: 8083
+spring:
+  profiles:
+    include: migration
+  jpa:
+    legacy-ad:
+      hikari:
+        maximum-pool-size: 50
+    recent-ad:
+      hikari:
+        maximum-pool-size: 50
+  cloud:
+    stream:
+      kafka:
+        bindings:
+          migrationUserConsumer-in-0:
+            consumer:
+              startOffset: latest
+          migration-user-out:
+            producer:
+              sync: true
+          page-migration-out:
+            producer:
+              sync: true
+          pageMigrationConsumer-in-0:
+            consumer:
+              startOffset: latest
+      binders:
+        migration-kafka:
+          type: kafka
+          environment:
+            spring.cloud.stream.kafka.binder:
+              brokers: localhost
+              defaultBrokerPort: 9194
+              replication-factor: 1
+              auto-create-topics: true
+              auto-add-partitions: true
+              min-partition-count: 4
+      bindings:
+        migrationUserConsumer-in-0:
+          binder: migration-kafka
+          destination: migration-user-topic
+          group: batch-migration
+        migration-user-out:
+          binder: migration-kafka
+          destination: migration-user-topic
+          producer:
+            partition-key-expression: headers['partitionKey']
+            partition-count: 4
+        page-migration-out:
+          binder: migration-kafka
+          destination: page-migration-topic
+          producer:
+            partition-key-expression: headers['partitionKey']
+            partition-count: 4
+        pageMigrationConsumer-in-0:
+          binder: migration-kafka
+          destination: page-migration-topic
+          group: batch-migration
+
+logging:
+  file:
+    name: logs/batch.log

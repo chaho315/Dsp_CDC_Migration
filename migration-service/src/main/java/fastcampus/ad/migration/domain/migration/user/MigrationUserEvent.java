@@ -12,4 +12,11 @@ public class MigrationUserEvent {
     public MigrationUserStatus getStatus(){
         return migrationUser.getStatus();
     }
+
+    @Override
+    public String toString() {
+        return "MigrationUserEvent{" +
+                "migrationUser=" + migrationUser +
+                '}';
+    }
 }

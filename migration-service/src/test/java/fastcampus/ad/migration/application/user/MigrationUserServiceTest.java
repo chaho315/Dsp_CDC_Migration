@@ -1,5 +1,6 @@
 package fastcampus.ad.migration.application.user;
 
+import fastcampus.ad.migration.application.legacyad.user.LegacyUserMigrationService;
 import fastcampus.ad.migration.domain.migration.user.MigrationUser;
 import fastcampus.ad.migration.domain.migration.user.MigrationUserRepository;
 import fastcampus.ad.migration.domain.migration.user.MigrationUserStatus;
@@ -21,6 +22,9 @@ import static org.mockito.Mockito.when;
 class MigrationUserServiceTest {
     @Mock
     MigrationUserRepository repository;
+
+    @Mock
+    LegacyUserMigrationService legacyUserMigrationService;
 
     @InjectMocks
     MigrationUserService service;
@@ -77,5 +81,34 @@ class MigrationUserServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.of(MigrationUser.agreed(1L)));
         boolean result = service.isDisagreed(1L);
         assertThat(result).isFalse();
+    }
+
+    @Test
+    void 마이그레이션_시작하고_사용자_마이그레이션_성공하면_사용자_상태_업데이트() throws StartMigrationFailedException {
+        when(repository.findById(1L)).thenReturn(Optional.of(MigrationUser.agreed(1L)));
+        when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(legacyUserMigrationService.migrate(any())).thenReturn(true);
+
+        MigrationUser user = service.startMigration(1L);
+
+        assertThat(user.getStatus()).isEqualTo(MigrationUserStatus.USER_FINISHED);
+    }
+
+    @Test
+    void 마이그레이션_시작하고_사용자_마이그레이션이_실패하면_에러(){
+        when(legacyUserMigrationService.migrate(any())).thenReturn(false);
+        assertThatThrownBy(() -> service.startMigration(1L)).isInstanceOf(StartMigrationFailedException.class);
+    }
+
+    @Test
+    void 마이그레이션_진행하면_사용자_상태_업데이트(){
+        MigrationUser user = MigrationUser.agreed(1L);
+        user.progressMigation();
+        when(repository.findById(1L)).thenReturn(Optional.of(user));
+        when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        MigrationUser result = service.progressMigration(1L);
+
+        assertThat(result.getStatus()).isEqualTo(MigrationUserStatus.ADGROUP_FINISHED);
     }
 }
