@@ -16,6 +16,7 @@ public abstract class PageMigration<T extends AbstractAggregateRoot<T>> extends 
 
     public final static Integer PAGE_INCREMENT = 1;
     public final static Integer INIT_PAGE_NUMBER = 0;
+    public final static Integer NOT_STARTED_PAGE_NUMBER = INIT_PAGE_NUMBER - PAGE_INCREMENT;
 
     @Id
     protected Long id;

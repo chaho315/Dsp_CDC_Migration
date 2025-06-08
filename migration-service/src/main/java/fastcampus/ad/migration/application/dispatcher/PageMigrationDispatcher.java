@@ -18,7 +18,7 @@ public class PageMigrationDispatcher {
     private final PageLegacyKeywordMigrationService keywordMigrationService;
 
     public boolean dispatch(Long userId, AggregateType aggregateType) {
-        PageLegacyMigrationService service = switch (aggregateType) {
+        PageLegacyMigrationService<?, ?, ?> service = switch (aggregateType) {
             case ADGROUP -> adGroupMigrationService;
             case KEYWORD -> keywordMigrationService;
             default -> throw new PageLegacyMigrationServiceNotFoundException();

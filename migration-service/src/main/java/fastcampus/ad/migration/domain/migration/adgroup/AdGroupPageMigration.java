@@ -12,6 +12,14 @@ public class AdGroupPageMigration extends PageMigration<AdGroupPageMigration> {
         super(id, pageNumber, pageSize, totalCount);
     }
 
+    public static AdGroupPageMigration first(boolean isSuccess, Long userId, Integer pageSize, Long totalCount) {
+        if(isSuccess){
+            return new AdGroupPageMigration(userId, PageMigration.INIT_PAGE_NUMBER, pageSize, totalCount);
+        }else{
+            return new AdGroupPageMigration(userId, PageMigration.NOT_STARTED_PAGE_NUMBER, pageSize, totalCount);
+        }
+    }
+
     @Override
     protected AggregateType aggregateType() {
         return AggregateType.ADGROUP;

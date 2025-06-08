@@ -17,6 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 class MigrationUserServiceTest {
@@ -87,7 +88,7 @@ class MigrationUserServiceTest {
     void 마이그레이션_시작하고_사용자_마이그레이션_성공하면_사용자_상태_업데이트() throws StartMigrationFailedException {
         when(repository.findById(1L)).thenReturn(Optional.of(MigrationUser.agreed(1L)));
         when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
-        when(legacyUserMigrationService.migrate(any())).thenReturn(true);
+        when(legacyUserMigrationService.migrate(anyLong())).thenReturn(true);
 
         MigrationUser user = service.startMigration(1L);
 
@@ -96,7 +97,7 @@ class MigrationUserServiceTest {
 
     @Test
     void 마이그레이션_시작하고_사용자_마이그레이션이_실패하면_에러(){
-        when(legacyUserMigrationService.migrate(any())).thenReturn(false);
+        when(legacyUserMigrationService.migrate(anyLong())).thenReturn(false);
         assertThatThrownBy(() -> service.startMigration(1L)).isInstanceOf(StartMigrationFailedException.class);
     }
 
