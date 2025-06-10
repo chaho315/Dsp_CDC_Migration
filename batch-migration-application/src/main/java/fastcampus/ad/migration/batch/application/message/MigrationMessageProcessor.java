@@ -42,7 +42,7 @@ public class MigrationMessageProcessor {
         }
     }
 
-    private void progressPageMigration(Long userId, AggregateType aggregateType, boolean isFinished) {
+    public void progressPageMigration(Long userId, AggregateType aggregateType, boolean isFinished) {
         if(isFinished){
             migrationUserService.progressMigration(userId);
         }else{
