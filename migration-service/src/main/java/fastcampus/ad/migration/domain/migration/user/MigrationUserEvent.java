@@ -13,6 +13,10 @@ public class MigrationUserEvent {
         return migrationUser.getStatus();
     }
 
+    public MigrationUserStatus getPrevStatus(){
+        return migrationUser.getPrevStatus();
+    }
+
     @Override
     public String toString() {
         return "MigrationUserEvent{" +

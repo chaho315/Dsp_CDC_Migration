@@ -27,7 +27,7 @@ public abstract class PageLegacyMigrationService<P extends PageMigration<P>, Leg
     }
 
     private PageMigrationResult migrationNextPage(P pageMigration) {
-        Integer pageNumber = pageMigration.getPageNumber();
+        Integer pageNumber = pageMigration.nextPageNumber();
         Page<Legacy> legacyPage = findPage(pageMigration.getId(), pageNumber);
         boolean isSuccess = migrate(legacyPage);
         pageMigration.progress(isSuccess, legacyPage.getTotalElements());

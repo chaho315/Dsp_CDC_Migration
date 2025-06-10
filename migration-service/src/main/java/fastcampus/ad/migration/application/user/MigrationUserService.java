@@ -34,7 +34,7 @@ public class MigrationUserService {
         return repository.findById(userId).isEmpty();
     }
     @Transactional
-    public MigrationUser startMigration(Long userId) throws StartMigrationFailedException {
+    public MigrationUserResult startMigration(Long userId) throws StartMigrationFailedException {
         boolean result = legacyUserMigrationService.migrate(userId);
         if(result){
             return progressMigration(userId);
@@ -42,10 +42,17 @@ public class MigrationUserService {
         throw new StartMigrationFailedException();
     }
     @Transactional
-    public MigrationUser progressMigration(Long userId) {
+    public MigrationUserResult progressMigration(Long userId) {
         MigrationUser migrationUser = find(userId);
         migrationUser.progressMigation();
-        return repository.save(migrationUser);
+        return MigrationUserResult.from(repository.save(migrationUser));
+    }
+
+    @Transactional
+    public MigrationUserResult retry(Long userId) {
+        MigrationUser migrationUser = find(userId);
+        migrationUser.retry();
+        return MigrationUserResult.from(repository.save(migrationUser));
     }
 
 }

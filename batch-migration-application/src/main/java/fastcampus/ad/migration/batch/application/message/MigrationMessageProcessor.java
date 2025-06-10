@@ -17,6 +17,14 @@ public class MigrationMessageProcessor {
     private final MigrationUserService migrationUserService;
     private final PageMigrationDispatcher pageMigrationDispatcher;
 
+    public void progressMigration(MigrationUserStatus prevStatus, MigrationUserStatus status, Long userId){
+        switch (status){
+            case RETRIED -> progressMigration(prevStatus, userId);
+            case AGREED, USER_FINISHED, ADGROUP_FINISHED, KEYWORD_FINISHED -> progressMigration(status, userId);
+            default -> log.info("migration-message-processor userId: {}, status: {}, prevStatus: {}",userId, status, prevStatus);
+        }
+    }
+
     public void progressMigration(MigrationUserStatus status, Long userId){
         switch (status){
             case AGREED -> getStartMigration(userId);
@@ -34,7 +42,7 @@ public class MigrationMessageProcessor {
         }
     }
 
-    public void progressPageMigration(Long userId, AggregateType aggregateType, boolean isFinished) {
+    private void progressPageMigration(Long userId, AggregateType aggregateType, boolean isFinished) {
         if(isFinished){
             migrationUserService.progressMigration(userId);
         }else{

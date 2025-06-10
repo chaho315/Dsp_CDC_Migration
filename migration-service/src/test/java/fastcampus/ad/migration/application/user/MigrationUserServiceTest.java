@@ -90,9 +90,9 @@ class MigrationUserServiceTest {
         when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
         when(legacyUserMigrationService.migrate(anyLong())).thenReturn(true);
 
-        MigrationUser user = service.startMigration(1L);
+        MigrationUserResult user = service.startMigration(1L);
 
-        assertThat(user.getStatus()).isEqualTo(MigrationUserStatus.USER_FINISHED);
+        assertThat(user.status()).isEqualTo(MigrationUserStatus.USER_FINISHED);
     }
 
     @Test
@@ -108,8 +108,8 @@ class MigrationUserServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.of(user));
         when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        MigrationUser result = service.progressMigration(1L);
+        MigrationUserResult result = service.progressMigration(1L);
 
-        assertThat(result.getStatus()).isEqualTo(MigrationUserStatus.ADGROUP_FINISHED);
+        assertThat(result.status()).isEqualTo(MigrationUserStatus.ADGROUP_FINISHED);
     }
 }

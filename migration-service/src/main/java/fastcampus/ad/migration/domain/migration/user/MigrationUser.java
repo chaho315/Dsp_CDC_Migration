@@ -19,7 +19,7 @@ public class MigrationUser extends AbstractAggregateRoot<MigrationUser> {
     private MigrationUserStatus status;
     private LocalDateTime agreedAt;
     private LocalDateTime updatedAt;
-    @Transient
+    @Enumerated(EnumType.STRING)
     private MigrationUserStatus prevStatus;
 
     public MigrationUser(Long id, LocalDateTime agreedAt) {
@@ -35,8 +35,13 @@ public class MigrationUser extends AbstractAggregateRoot<MigrationUser> {
     }
 
     public void progressMigation() {
-        prevStatus = status;
-        status = status.next();
+        if(MigrationUserStatus.RETRIED.equals(status)){
+            status = prevStatus.next();
+        }else{
+            prevStatus = status;
+            status = status.next();
+        }
+
         updatedAt = LocalDateTime.now();
         registerEvent(new MigrationProgressedEvent(this));
     }
@@ -50,5 +55,15 @@ public class MigrationUser extends AbstractAggregateRoot<MigrationUser> {
                 ", updatedAt=" + updatedAt +
                 ", prevStatus=" + prevStatus +
                 '}';
+    }
+
+    public void retry() {
+        if(!MigrationUserStatus.RETRIED.equals(status)){
+            prevStatus = status;
+            status = MigrationUserStatus.RETRIED;
+        }
+
+        updatedAt = LocalDateTime.now();
+        registerEvent(new MigrationRetriedEvent(this));
     }
 }

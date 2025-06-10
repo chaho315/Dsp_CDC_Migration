@@ -22,4 +22,10 @@ public class MigrationUserController {
         MigrationUserResult result = service.findById(userId);
         return new MigrationUserResp(result.id(), result.status(), result.agreedAt(), result.updatedAt());
     }
+
+    @PutMapping("/{userId}/retry")
+    public MigrationUserResp retry(@PathVariable Long userId){
+        MigrationUserResult result = service.retry(userId);
+        return new MigrationUserResp(result.id(), result.status(), result.agreedAt(), result.updatedAt());
+    }
 }
