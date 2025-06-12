@@ -1,7 +1,6 @@
 package fastcampus.ad.legacy.api.keyword;
 
-import fastcampus.ad.legacy.api.keyword.LegacykeywordCreateRequest;
-import fastcampus.ad.legacy.api.keyword.LegacykeywordResp;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
