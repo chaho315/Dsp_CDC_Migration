@@ -14,4 +14,5 @@ public interface LegacyAdGroupRepository extends LegacyPageableRepository<Legacy
 
     List<LegacyAdGroup> findAllByCampaignIdAndDeletedAtIsNull(Long campaignId);
 
+    List<LegacyAdGroup> findAllByCampaignIdInAndDeletedAtIsNull(List<Long> campaignIds);
 }

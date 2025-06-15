@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public abstract class PageLegacyMigrationService<P extends PageMigration<P>, Legacy extends DeletableEntity, Recent extends MigratedEntity> {
-    public final static Integer PAGE_SIZE = 1;
+    public final static Integer PAGE_SIZE = 1000;
     protected final PageMigrationRepository<P> pageMigrationRepository;
-    protected final LegacyPageableRepository<Legacy> legacyLongCrudRepository;
+    protected final LegacyPageableRepository<Legacy> legacyPageableRepository;
     protected final LegacyMigrationService<Legacy, Recent> legacyMigrationService;
 
     @Transactional
@@ -50,7 +50,7 @@ public abstract class PageLegacyMigrationService<P extends PageMigration<P>, Leg
         return legacyMigrationService.migrate(legacyPage.toList());
     }
 
-    private Page<Legacy> findPage(Long userId, Integer pageNumber) {
-        return legacyLongCrudRepository.findAllByUserIdAndDeletedAtIsNullOrderById(userId, PageRequest.of(pageNumber, PAGE_SIZE));
+    protected Page<Legacy> findPage(Long userId, Integer pageNumber) {
+        return legacyPageableRepository.findAllByUserIdAndDeletedAtIsNullOrderById(userId, PageRequest.of(pageNumber, PAGE_SIZE));
     }
 }

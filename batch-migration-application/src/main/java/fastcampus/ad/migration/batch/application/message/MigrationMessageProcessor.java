@@ -1,13 +1,13 @@
 package fastcampus.ad.migration.batch.application.message;
 
-import fastcampus.ad.migration.application.dispatcher.PageMigrationDispatcher;
+import fastcampus.ad.migration.application.dispatcher.ParentPageMigrationDispatcher;
 import fastcampus.ad.migration.application.user.MigrationUserService;
 import fastcampus.ad.migration.application.user.StartMigrationFailedException;
 import fastcampus.ad.migration.domain.AggregateType;
-import fastcampus.ad.migration.domain.migration.user.MigrationUser;
 import fastcampus.ad.migration.domain.migration.user.MigrationUserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -15,8 +15,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MigrationMessageProcessor {
     private final MigrationUserService migrationUserService;
-    private final PageMigrationDispatcher pageMigrationDispatcher;
+    private final ParentPageMigrationDispatcher parentPageMigrationDispatcher;
 
+    @Async
     public void progressMigration(MigrationUserStatus prevStatus, MigrationUserStatus status, Long userId){
         switch (status){
             case RETRIED -> progressMigration(prevStatus, userId);
@@ -42,6 +43,7 @@ public class MigrationMessageProcessor {
         }
     }
 
+    @Async
     public void progressPageMigration(Long userId, AggregateType aggregateType, boolean isFinished) {
         if(isFinished){
             migrationUserService.progressMigration(userId);
@@ -51,6 +53,6 @@ public class MigrationMessageProcessor {
     }
 
     private void dispatch(Long userId, AggregateType aggregateType) {
-        pageMigrationDispatcher.dispatch(userId, aggregateType);
+        parentPageMigrationDispatcher.dispatch(userId, aggregateType);
     }
 }
